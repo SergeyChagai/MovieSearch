@@ -1,0 +1,18 @@
+[
+    {
+        "GenreId": 5,
+        "MovieId": 1
+    },
+    {
+        "GenreId": 6,
+        "MovieId": 1
+    },
+    {
+        "GenreId": 5,
+        "MovieId": 2
+    },
+    {
+        "GenreId": 6,
+        "MovieId": 2
+    }
+]

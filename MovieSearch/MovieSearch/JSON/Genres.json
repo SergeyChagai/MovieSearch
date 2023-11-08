@@ -1,0 +1,30 @@
+[
+    {
+        "Id": 1,
+        "Name": "Romcom"
+    },
+    {
+        "Id": 2,
+        "Name": "Sci-fi"
+    },
+    {
+        "Id": 3,
+        "Name": "Horror"
+    },
+    {
+        "Id": 4,
+        "Name": "Documentary"
+    },
+    {
+        "Id": 5,
+        "Name": "Action"
+    },
+    {
+        "Id": 6,
+        "Name": "Thriller"
+    },
+    {
+        "Id": 7,
+        "Name": "Drama"
+    }
+]
