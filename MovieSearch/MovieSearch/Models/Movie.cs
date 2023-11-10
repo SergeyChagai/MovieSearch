@@ -10,5 +10,7 @@ namespace MovieSearch.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public List<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
+        public List<MovieGenre> MovieGenres { get; set; } = new List<MovieGenre>();
     }
 }

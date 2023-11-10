@@ -17,15 +17,39 @@ namespace MovieSearch
         public MainPage()
         {
             InitializeComponent();
+
+            //Extraction ViewModel from DIContainer
+
             var viewModelLocator = Application.Current.Resources["Locator"];
             _viewModel = (viewModelLocator as ViewModelLocator).MainPageViewModel;
             BindingContext = _viewModel;
-            movieTitleEntry.PropertyChanged += MovieTitleEntry_PropertyChanged;
+
+            //Subscription on GUI Events
+
+            movieTitleEntry.Completed += OnMovieTitleEntryCompleted;
+            actorNameEntry.Completed += OnActorNameEntryCompleted;
+            genrePicker.SelectedIndexChanged += OnGenrePickerSelectedIndexChanged;
+
+            Console.WriteLine($"{this.GetType().Name} has loaded at {DateTime.Now}");
         }
 
-        private void MovieTitleEntry_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnMovieTitleEntryCompleted(object sender, EventArgs e)
         {
-            _viewModel.Test();
+            var entry = (Entry)sender;
+            _viewModel.Title = entry.Text;
         }
+        
+        private void OnActorNameEntryCompleted(object sender, EventArgs e)
+        {
+            var entry = (Entry)sender;
+            _viewModel.ActorName = entry.Text;
+        }
+
+        private void OnGenrePickerSelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = (Picker)sender;
+            _viewModel.GenreName = picker.Items.ElementAt(picker.SelectedIndex);
+        }
+
     }
 }
