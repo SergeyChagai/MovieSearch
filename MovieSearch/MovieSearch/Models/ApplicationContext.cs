@@ -24,12 +24,19 @@ namespace MovieSearch.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Filename={_databasePath}");
+            optionsBuilder.UseSqlite($"DataSource={_databasePath}");
+#if DEBUG
+            optionsBuilder.EnableSensitiveDataLogging();
+#endif
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            //Ignorable entities in Movies table
+            modelBuilder.Entity<Movie>()
+                .Ignore(m => m.Actors)
+                .Ignore(m => m.Genres);
+
             modelBuilder.Entity<Movie>()
                 .HasKey(m => m.Id);
             modelBuilder.Entity<Actor>()

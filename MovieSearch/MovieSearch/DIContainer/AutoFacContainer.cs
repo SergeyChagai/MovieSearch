@@ -20,7 +20,7 @@ namespace MovieSearch.DIContainer
         public static void Initialize()
         {
             ContainerBuilder containerBuilder = new ContainerBuilder();
-            containerBuilder.Register(c => new ApplicationContext(DependencyService.Get<IPath>().GetDatabasePath(DATABASE_NAME))).As<IApplicationContext>();
+            containerBuilder.Register(c => new ApplicationContext(((App)Application.Current).DatabasePath)).As<IApplicationContext>();
             containerBuilder.RegisterType<MainPageViewModel>().AsSelf();
 
             IContainer container = containerBuilder.Build();

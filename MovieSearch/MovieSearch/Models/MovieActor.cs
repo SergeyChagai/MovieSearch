@@ -11,5 +11,10 @@ namespace MovieSearch.Models
 
         public Movie Movie { get; set;}
         public Actor Actor { get; set;}
+
+        public override string ToString()
+        {
+            return Actor.Name;
+        }
     }
 }

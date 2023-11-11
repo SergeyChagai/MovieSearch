@@ -11,5 +11,10 @@ namespace MovieSearch.Models
 
         public Movie Movie { get; set; }
         public Genre Genre { get; set; }
+
+        public override string ToString()
+        {
+            return Genre.Name;
+        }
     }
 }

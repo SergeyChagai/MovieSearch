@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MovieSearch.Extensions;
+using MovieSearch.Extentions;
 using MovieSearch.Models;
 using MovieSearch.Models.Interfaces;
 using System;
@@ -15,44 +15,40 @@ namespace MovieSearch.ViewModels
 {
     public class MainPageViewModel
     {
-        public ICommand SearchCommand { get; set; }
-        public string Title { get; set; }
-        public string ActorName { get; set; }
-        public string GenreName { get; set; }
-        public ObservableCollection<Movie> Movies { get; set; }
+        public ObservableCollection<Movie> Movies { get; set; } = new ObservableCollection<Movie>();
 
         private IApplicationContext _applicationContext;
 
         public MainPageViewModel(IApplicationContext applicationContext)
         {
-            SearchCommand = new Command(OnSearchButtonClicked);
             _applicationContext = applicationContext;
-            InitializeData();
         }
 
-        private void InitializeData()
+        public async void SearchMoviesAsync(string title, string actorName, string genreName)
         {
-            Movies = new ObservableCollection<Movie>(_applicationContext.Movies.ToList());
-        }
-
-        private void OnSearchButtonClicked()
-        {
-            Console.WriteLine($"Button was pressed at {DateTime.Now}");
             Movies.Clear();
-            var tmp = _applicationContext.Movies
-                .Include(m => m.MovieActors)
-                .Include(m => m.MovieGenres);
-            var query = tmp
+
+            //Request for DB
+            var query = await _applicationContext.Movies
+                .Include(m => m.MovieActors).ThenInclude(ma => ma.Actor)
+                .Include(m => m.MovieGenres).ThenInclude(mg => mg.Genre)
                 .Where(m =>
-                    String.IsNullOrEmpty(Title) ? true : m.Name.Contains(Title) &&
-                    String.IsNullOrEmpty(GenreName) ? true : m.MovieGenres.Any(g => g.Genre.Name.Contains(GenreName)) &&
-                    String.IsNullOrEmpty(ActorName) ? true : m.MovieActors.Any(a => a.Actor.Name.Contains(ActorName)))
-                .ToList();
-            Movies.AddRange(query);
-        }
-        public void Test()
-        {
-            ;
+                (string.IsNullOrEmpty(title) || m.Name.ToLower().Contains(title.ToLower())) &&
+                (string.IsNullOrEmpty(genreName) || m.MovieGenres.Any(g => g.Genre.Name.ToLower().Contains(genreName.ToLower()))) &&
+                (string.IsNullOrEmpty(actorName) || m.MovieActors.Any(a => a.Actor.Name.ToLower().Contains(actorName.ToLower()))))
+            .ToListAsync();
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Movies.AddRange(query);
+
+                //Add string properties for models
+                foreach (var movie in Movies)
+                {
+                    movie.Actors = String.Join(", ", movie.MovieActors);
+                    movie.Genres = String.Join(", ", movie.MovieGenres);
+                }
+            });
         }
     }
 }

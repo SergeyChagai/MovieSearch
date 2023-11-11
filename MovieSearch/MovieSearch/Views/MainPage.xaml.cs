@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -25,31 +26,14 @@ namespace MovieSearch
             BindingContext = _viewModel;
 
             //Subscription on GUI Events
-
-            movieTitleEntry.Completed += OnMovieTitleEntryCompleted;
-            actorNameEntry.Completed += OnActorNameEntryCompleted;
-            genrePicker.SelectedIndexChanged += OnGenrePickerSelectedIndexChanged;
+            searchButton.Clicked += OnSearchButtonClicked;
 
             Console.WriteLine($"{this.GetType().Name} has loaded at {DateTime.Now}");
         }
 
-        private void OnMovieTitleEntryCompleted(object sender, EventArgs e)
+        private async void OnSearchButtonClicked(object sender, EventArgs e)
         {
-            var entry = (Entry)sender;
-            _viewModel.Title = entry.Text;
+            await Task.Run(() => _viewModel.SearchMoviesAsync(movieTitleEntry.Text, actorNameEntry.Text, genrePicker.SelectedItem?.ToString()));
         }
-        
-        private void OnActorNameEntryCompleted(object sender, EventArgs e)
-        {
-            var entry = (Entry)sender;
-            _viewModel.ActorName = entry.Text;
-        }
-
-        private void OnGenrePickerSelectedIndexChanged(object sender, EventArgs e)
-        {
-            var picker = (Picker)sender;
-            _viewModel.GenreName = picker.Items.ElementAt(picker.SelectedIndex);
-        }
-
     }
 }

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieSearch.Android", "Movi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieSearch.iOS", "MovieSearch\MovieSearch.iOS\MovieSearch.iOS.csproj", "{182CAFAE-A156-467C-BA91-8CD0DFBEEDB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieSearch", "MovieSearch\MovieSearch\MovieSearch.csproj", "{AF4F8B5C-9E08-4A5C-9496-DA5EFE72C456}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieSearch", "MovieSearch\MovieSearch\MovieSearch.csproj", "{AF4F8B5C-9E08-4A5C-9496-DA5EFE72C456}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
