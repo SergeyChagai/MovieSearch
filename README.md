@@ -18,8 +18,9 @@ iOS: 8.0
 2. Упаковка и публикация приложения:
 	• iOS: https://learn.microsoft.com/en-us/xamarin/ios/deploy-test/app-distribution/app-store-distribution/publishing-to-the-app-store?tabs=windows.
 	• Android: https://learn.microsoft.com/en-us/xamarin/android/deploy-test/release-prep/?tabs=windows.
-3. Использование DI Container:
-  
+3. [Использование DI Container:](MovieSearch/MovieSearch/DIContainer/AutoFacContainer.cs)
+  	![image](https://github.com/SergeyChagai/MovieSearch/assets/35423297/ed068824-ae04-4517-9256-bf1940f2d6bf)
+
 	• В приложении используется DI Container (Dependency Injection) от Autofac.
 	• Конфигурация DI Container - в сочетании с CommonServiceLocator.
 5. База данных и миграции:
