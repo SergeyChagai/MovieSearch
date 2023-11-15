@@ -24,16 +24,18 @@ namespace MovieSearch
             var viewModelLocator = Application.Current.Resources["Locator"];
             _viewModel = (viewModelLocator as ViewModelLocator).MainPageViewModel;
             BindingContext = _viewModel;
+            _viewModel.SearchDataNeeded += OnSearchDataNeeded;
 
             //Subscription on GUI Events
-            searchButton.Clicked += OnSearchButtonClicked;
 
             Console.WriteLine($"{this.GetType().Name} has loaded at {DateTime.Now}");
         }
 
-        private async void OnSearchButtonClicked(object sender, EventArgs e)
+        private void OnSearchDataNeeded()
         {
-            await Task.Run(() => _viewModel.SearchMoviesAsync(movieTitleEntry.Text, actorNameEntry.Text, genrePicker.SelectedItem?.ToString()));
+            _viewModel.SearchTitle = movieTitleEntry.Text;
+            _viewModel.SearchGenre = genrePicker.SelectedIndex < 0 ? String.Empty : genrePicker.Items[genrePicker.SelectedIndex];
+            _viewModel.SearchActor = actorNameEntry.Text;
         }
     }
 }

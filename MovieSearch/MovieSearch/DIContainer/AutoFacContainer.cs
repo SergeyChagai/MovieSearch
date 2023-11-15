@@ -5,6 +5,7 @@ using CommonServiceLocator;
 using Microsoft.Extensions.DependencyModel;
 using MovieSearch.Models;
 using MovieSearch.Models.Interfaces;
+using MovieSearch.Models.Services;
 using MovieSearch.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace MovieSearch.DIContainer
         {
             ContainerBuilder containerBuilder = new ContainerBuilder();
             containerBuilder.Register(c => new ApplicationContext(((App)Application.Current).DatabasePath)).As<IApplicationContext>();
+            containerBuilder.RegisterType<MovieDtoMapper>().As<IMovieDtoMapper>();
+            containerBuilder.RegisterType<MovieService>().As<IMovieService>();
             containerBuilder.RegisterType<MainPageViewModel>().AsSelf();
 
             IContainer container = containerBuilder.Build();

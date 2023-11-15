@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieSearch.Extentions;
-using MovieSearch.Models;
 using MovieSearch.Models.Interfaces;
+using MovieSearch.ViewModels.DTO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -15,40 +16,33 @@ namespace MovieSearch.ViewModels
 {
     public class MainPageViewModel
     {
-        public ObservableCollection<Movie> Movies { get; set; } = new ObservableCollection<Movie>();
+        public ICommand MovieSearchCommand { get; set; }
+        public ObservableCollection<MovieDto> Movies { get; set; }
+        public string SearchTitle { get; set; }
+        public string SearchActor { get; set; }
+        public string SearchGenre { get; set; }
 
-        private IApplicationContext _applicationContext;
+        public event Action SearchDataNeeded;
 
-        public MainPageViewModel(IApplicationContext applicationContext)
+        private IMovieService _movieService;
+
+        public MainPageViewModel(IMovieService movieService)
         {
-            _applicationContext = applicationContext;
+            _movieService = movieService;
+            MovieSearchCommand = new Command(SearchMoviesAsync);
+            Movies = new ObservableCollection<MovieDto>();
         }
 
-        public async void SearchMoviesAsync(string title, string actorName, string genreName)
+        public async void SearchMoviesAsync()
         {
+            SearchDataNeeded?.Invoke();
             Movies.Clear();
 
             //Request for DB
-            var query = await _applicationContext.Movies
-                .Include(m => m.MovieActors).ThenInclude(ma => ma.Actor)
-                .Include(m => m.MovieGenres).ThenInclude(mg => mg.Genre)
-                .Where(m =>
-                (string.IsNullOrEmpty(title) || m.Name.ToLower().Contains(title.ToLower())) &&
-                (string.IsNullOrEmpty(genreName) || m.MovieGenres.Any(g => g.Genre.Name.ToLower().Contains(genreName.ToLower()))) &&
-                (string.IsNullOrEmpty(actorName) || m.MovieActors.Any(a => a.Actor.Name.ToLower().Contains(actorName.ToLower()))))
-            .ToListAsync();
+            var movies = await Task.Run(() => _movieService
+                .SearchMoviesAsync(SearchTitle, SearchGenre, SearchActor));
 
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                Movies.AddRange(query);
-
-                //Add string properties for models
-                foreach (var movie in Movies)
-                {
-                    movie.Actors = String.Join(", ", movie.MovieActors);
-                    movie.Genres = String.Join(", ", movie.MovieGenres);
-                }
-            });
+            Movies.AddRange(movies);
         }
     }
 }

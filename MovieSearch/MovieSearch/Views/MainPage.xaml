@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:customViews="clr-namespace:MovieSearch.Views"
              x:Class="MovieSearch.MainPage">
 
     <StackLayout>
@@ -23,7 +24,7 @@
             </Picker.Items>
         </Picker>
         <Entry Placeholder="Enter the actor name" x:Name="actorNameEntry" />
-        <Button Text="Search" Command="{Binding SearchCommand}" x:Name="searchButton" />
+        <Button Text="Search" Command="{Binding MovieSearchCommand}" x:Name="searchButton" />
         <ScrollView VerticalOptions="EndAndExpand">
             <CollectionView ItemsSource="{Binding Movies}" x:Name="moviesCollectionView">
                 <CollectionView.ItemTemplate>
@@ -47,16 +48,19 @@
                                 LineBreakMode="WordWrap"
                                 MaxLines="5"
                                 VerticalOptions="End" />
-                            <Label Grid.Row="0"
+                            <customViews:RowListView Grid.Row="0"
                                    Grid.Column="1"
-                                   Text="{Binding Actors}"/>
-                            <Label Grid.Row="1"
+                                   Actors="{Binding Actors}" 
+                                   Separator=", "
+                                   />
+                            <customViews:RowListView Grid.Row="1"
                                    Grid.Column="1"
-                                   Text="{Binding Genres}"/>
+                                   Separator=", "
+                                   Genres="{Binding Genres}"/>
                             <BoxView HeightRequest="1"
                                    Grid.ColumnSpan="2"
                                    Grid.Row="2"
-                                   VerticalOptions="Center"/>  
+                                   VerticalOptions="Center"/>
 
                         </Grid>
                     </DataTemplate>
