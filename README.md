@@ -68,3 +68,9 @@ iOS: 8.0
 2. Минимальные комментарии:  
 	• Комментарии добавлены там, где необходимо для лучшего понимания кода.  
 	• Дополнительные пояснения по коду доступны в *вставить ссылку на файл*.  
+
+
+### Примеры SQL-запросов
+
+https://github.com/SergeyChagai/MovieSearch/blob/6613dfd6ef6c7869a6a8926101ee8f5afae40531/MovieSearch/MovieSearch/AllData.sql#L1-L5
+https://github.com/SergeyChagai/MovieSearch/blob/6613dfd6ef6c7869a6a8926101ee8f5afae40531/MovieSearch/MovieSearch/MovieSearch.sql#L1-L13
